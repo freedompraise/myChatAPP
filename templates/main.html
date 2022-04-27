@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+    <meta charsgggget='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Dating SIte</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+   <link rel="stylesheet" media='screen' href="{% static 'styles/main.css }">
+</head>
+<body>
+    {% include 'navbar.html' %}
+
+    <ul class="messages">
+        {% for message in messages %}
+        <li></li>{{message}}</li>
+            {% endfor %} 
+    </ul>    
+       
+    
+
+    {% block content %}
+
+    {% endblock %}
+</body>
+
+</html>
