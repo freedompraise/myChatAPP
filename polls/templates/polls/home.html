@@ -1,0 +1,50 @@
+<style>
+    html{
+        background-color: darkblue;
+    }
+    h1{
+        color:greenyellow;
+    }
+
+h4,h5,small,a{
+    color:whitesmoke;
+}
+
+.home-container{
+    display:grid;
+    grid-template-columns: 1fr 3fr 1fr;
+}
+    </style>
+    {% extends 'main.html' %}
+
+    {% block content %}
+    
+
+<header >
+    <h1>Home Page</h1>
+    <hr>
+    </header>
+
+    <main class="home-container">
+       <div>
+           {% include 'polls/topics.html' %}
+       </div>
+            <div class="">
+                <h5>{{room_count}} rooms available</h5>
+                <a href="{% url 'create-room' %}">Create Room</a>
+         
+               {% include 'polls/feeds.html' %}       
+            </div>
+                 
+         <div>
+             {% include 'polls/activity.html' %}
+         </div>   
+        
+            </main>
+
+           
+            
+
+{% endblock %}
+
+    

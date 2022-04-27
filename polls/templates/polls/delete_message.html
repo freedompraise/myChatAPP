@@ -1,0 +1,28 @@
+<style>
+    html{
+        background-color:  darkkhaki;
+    }
+    a{
+        color:blue;
+    }
+    p{
+        color:red;
+    }
+#delete{
+    color:red;
+}
+</style>
+{% extends 'main.html' %}
+
+{% block content %}
+
+<div>
+    <form method="POST" action="">
+        {% csrf_token %}
+        <strong>Are you sure you want to delete-mesage? "{{obj}}"?</strong>
+    <a href="{% url 'home' %}">No, Take me back </a>
+        <input type="submit" value="{{request.path}}" id="delete"
+        />
+    </form>
+</div>
+{% endblock %}

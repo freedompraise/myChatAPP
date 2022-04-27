@@ -1,0 +1,35 @@
+<style>
+    h3{
+        color:blueviolet;
+    }
+    html{
+        background-color:greenyellow
+    }
+    .profile-container{
+        display:grid;
+        grid-template-columns: 1fr 3fr 1fr;
+    }
+</style>
+{% extends 'main.html' %}
+
+{% load static %}
+{% block content %}
+<header>
+    <img src="{% static 'images/image.jpg' %}" alt="Image.jpg"/><h3>{{user.username}}'s profile</h3></header>
+
+<section class="profile-container">
+    <div>
+        {% include 'polls/topics.html' %} 
+</div>
+
+<div>
+{% include 'polls/feeds.html' %}    
+</div>
+
+<div>
+    {% include 'polls/activity.html' %} 
+</div>
+
+</section>
+
+{% endblock %}

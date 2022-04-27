@@ -1,0 +1,62 @@
+<style>
+    html{
+        background-color:  darkkhaki;
+    }
+    .room-container{
+        display:grid;
+        grid-template-columns: 3fr 1fr;
+    }
+</style>
+
+{% extends 'main.html' %}
+
+{% block content %}
+<div class='room-container'>
+<div>
+<header>
+<h1>{{room.name}}</h1>
+<h4>{{room.description}}</h4>
+</header>
+<h5>Conversation</h5>
+{% for message in messages %}
+<div>
+    <section name="messages">
+       <!--<form method="POST" action="">
+            {% csrf_token %}
+            <input type="submit" value="Delete" name="field"
+/>
+        </form>-->
+        {% if request.user.is_superuser %}
+    <a href="{% url 'delete-message' message.id %}">Delete message</a> 
+      {% endif %}
+    <small>{{request.user}} {{message.created|timesince}} ago</small>
+    <p>{{message.body}}</p>
+    <hr>
+</div>
+{% endfor %}
+
+{% if request.user.is_authenticated %}
+<section name="messages">
+    <form method="POST" action="">
+        {% csrf_token %}
+        <input type="text" placeholder="Message" name="field"
+        />
+    </form>
+    {% if request.user.is_superuser %}
+    <a href="{% url 'messages' %}">Delete a message</a> 
+    {% endif %}
+</section>
+{% endif %}
+</div>
+<div> <h3>Participants</h3>
+<hr>
+
+{% for user in participants %}
+<div>
+    <p>@{{user.username}}</p>
+</div>
+{% endfor %}
+</div>
+
+</div>
+{% endblock %}
