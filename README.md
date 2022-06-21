@@ -1,2 +1,2 @@
 # Django-app
- A soicai media site done with django, html, css and javascript.
+ A social media site done with django, html, css and javascript.
