@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'polls.apps.PollsConfig',
+    'chatapp',
     'rest_framework',          #to use django rest framework
     'corsheaders', #makes django accept requests to its api from other websites: has it's middleware
     'reset_migrations',
@@ -107,14 +107,15 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-AUTH_USER_MODEL ='polls.User'
+AUTH_USER_MODEL ='chatapp.User'
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'WAT'
+import zoneinfo
+zoneinfo.available_timezones()
 
 USE_I18N = True
 

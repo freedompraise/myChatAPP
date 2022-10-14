@@ -1,8 +1,7 @@
 from django.shortcuts import render,redirect
 from django.contrib import messages
 from .models import Room,Message,Topic,User
-from django.contrib.auth.decorators import login_required #restricts a suer not logged in from carrying out ann cation
-#from django.contrib.auth.models import User 
+from django.contrib.auth.decorators import login_required
 from django.db.models import Q #django query model
 #from django.contrib.auth.forms import UserCreationForm# django inbuilt from for registering user
 from .forms import myUserForm
@@ -14,11 +13,8 @@ from django.contrib.auth import authenticate,login,logout
 
 @login_required(login_url='login')
 def room(request,pk):
-    #pk(parameter key) is similar to an extension to the url originally typed in the views. 
-    #eg, if the user types '...room/1/', the param key is 1
-    #For this project, the pk is made to match the id of the rooms
     room=Room.objects.get(id=pk)
-    messages=room.message_set.all().order_by('-created') # gets all the instances in model; Message that relates to the particular room
+    messages=room.message_set.all().order_by('-created')
     participants=room.participants.all # this is a many-many relationship
     if request.method=='POST':
         Message.objects.create(
@@ -29,7 +25,7 @@ def room(request,pk):
         room.participants.add(request.user)# adds a user that gives a request, i.e sends a message
         return redirect('room',pk=room.id)
     context={'room':room,'messages':messages,'participants':participants}
-    return render( request, 'polls/room.html',context)
+    return render( request, 'chatapp/room.html',context)
 
 
 
@@ -49,7 +45,7 @@ def updateRoom(request,pk):
         room.save()
         return redirect('home')
     context={"form":form,'topics':topics,'room':room}
-    return render(request, 'polls/room_form.html',context )
+    return render(request, 'chatapp/room_form.html',context )
 
 
 @login_required(login_url='login') #restricts/ rdirects the user to the login page at this point if not logged in
@@ -67,7 +63,7 @@ def createRoom(request):
         )
         return redirect('home')
     text={'form':form,'topics':topics}
-    return render(request, 'polls/room_form.html',text)
+    return render(request, 'chatapp/room_form.html',text)
 
 
 def deleteMessage(request,pk):
@@ -79,7 +75,7 @@ def deleteMessage(request,pk):
         key=message.room_id
         message.delete()
         return redirect('room',pk=key)
-    return render(request,'polls/delete_message.html',{'obj':message})
+    return render(request,'chatapp/delete_message.html',{'obj':message})
 
 
 def home(request):
@@ -101,7 +97,7 @@ def home(request):
      #filters the messages displayed by the side
     room_messages=room_messages[:5]# i only want to get the most recent five objects of this to avoid the display running down the page
     context={'rooms':rooms, 'room_messages':room_messages,'topics':topics,'room_count':room_count}
-    return render(request,'polls/home.html',context)
+    return render(request,'chatapp/home.html',context)
 
 
 #def editMessage(request):
@@ -111,32 +107,21 @@ def user_profile(request,pk):
     rooms=user.room_set.all()
     topics=Topic.objects.all()
     context={'user':user,'rooms':rooms,'topics':topics,'room_messages':room_messages,}
-    return render(request,'polls/profile.html',context) 
+    return render(request,'chatapp/profile.html',context) 
 
 
 
 
 def loginPage(request):
-    page='login'
-    if request.user.is_authenticated:
+    email = request.POST.get('username')
+    password = request.POST.get('password')
+    user=authenticate(request, username=email, password=password)
+    if user is not None:
+        login(request,user)
         return redirect('home')
-    if request.method=='POST':
-        email=request.POST.get('email')
-        password=request.POST.get('password')
-        
-        try:
-            user=User.objects.get(email=email)
-        except:
-            messages.error(request,'User not registered')
-            
-        user=authenticate(request, email=email, password=password)
-        if user is not None:
-            login(request,user)
-            return redirect('home')
-        else:  
-            messages.error(request,'Username or Password not correct')
-    context={'page':page}
-    return render(request, 'polls/login.html',context)
+    else:  
+        messages.error(request,'Username or Password not correct')
+    return render(request, 'chatapp/login.html')
 
 
 def logoutUser(request):
@@ -155,7 +140,7 @@ def registerUser(request):
             login(request,user)
         else: messages.error(request,"Error Occured During Registration")
         return redirect('home')
-    return render(request, 'polls/signup.html',{'form': form})
+    return render(request, 'chatapp/signup.html',{'form': form})
  
 
 @login_required(login_url='login')
@@ -164,7 +149,7 @@ def deleteRoom(request,pk):
     if request.method=='POST':
         room.delete()
         return redirect('home')
-    return render(request,'polls/delete.html',{'room':room})
+    return render(request,'chatapp/delete.html',{'room':room})
 
 @login_required(login_url='login')
 def editUser(request):
@@ -173,14 +158,14 @@ def editUser(request):
         form =UserForm(request.POST, request.FILES, instance=request.user,)
         form.save()
         return redirect('profile',pk=request.user.id)
-    return render(request, 'polls/edit-user.html',{'form':form})
+    return render(request, 'chatapp/edit-user.html',{'form':form})
     #third parameter under the return is dict used for naming files in the html file
 
 def topicsPage(request):
     q=request.GET.get('q') if request.GET.get('q')!=None else ''
     topics=Topic.objects.filter(name__icontains=q)
-    return render(request, 'polls/all_topics.html',{'topics':topics})
+    return render(request, 'chatapp/all_topics.html',{'topics':topics})
 
 def activitiesPage(request):
     room_messages=Message.objects.all()
-    return render(request,'polls/all_activities.html',{'messages':room_messages})
+    return render(request,'chatapp/all_activities.html',{'messages':room_messages})

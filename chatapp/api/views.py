@@ -1,7 +1,7 @@
 #from django.http import JsonResponse
 from rest_framework.response import Response
 from rest_framework.decorators import api_view #django UI for displaying an api
-from polls.models import Room,Topic
+from chatapp.models import Room,Topic
 from .serializers import serialRoom, serialTopic
 @api_view(['GET'])
 def getRoute(request):

@@ -8,12 +8,14 @@
       <div class="container">
         <div>
         <!-- Topics Start -->
-       {% include 'polls/topics.html' %}
+       {% include 'chatapp/topics.html' %}
         <!-- Topics End -->
        </div>
         <!-- Room List Start -->
               <div>   <a href="{% url 'home' %}" class="header__logo">
-                <img src="{{request.user.avatar.url}}" />
+                {% if request.user.avatar %}
+                <img src="{{request.user.avatar.url}}" width = "127" height = "127"/>
+                {% endif %}
                 <h2>myCHATAPP</h2>
               </a>
               <form class="header__search" method="GET" action="{% url 'home' %}">
@@ -27,12 +29,12 @@
                   <input name='q' placeholder="Search for rooms..." name />
                 </label>
               </form>
-        {% include 'polls/activity.html' %}
+        {% include 'chatapp/activity.html' %}
         <!-- Room List End -->
         </div> 
         <!-- Activities Start -->
         <div>
-        {% include 'polls/feeds.html' %}
+        {% include 'chatapp/feeds.html' %}
         <!-- Activities End -->
       </div>
       </div>
