@@ -21,7 +21,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('chatapp.urls')),
-    path('api/',include('chatapp.api.urls')),
+    # path('api/',include('chatapp.api.urls')),
     ]
 
 urlpatterns+=static(settings.MEDIA_URL,document_root = settings.MEDIA_ROOT ) # we connect the media rooot to it's url

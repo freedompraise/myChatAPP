@@ -169,3 +169,7 @@ def topicsPage(request):
 def activitiesPage(request):
     room_messages=Message.objects.all()
     return render(request,'chatapp/all_activities.html',{'messages':room_messages})
+
+def allRomoms(request):
+    rooms = Room.objeccts.all()
+    return render(request, '')
